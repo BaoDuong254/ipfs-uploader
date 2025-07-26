@@ -1,4 +1,4 @@
-# IPFS File Upload / Download
+# IPFS Uploader
 
 A minimal Node.js + Express application that lets you **upload any file to IPFS and retrieve it later with its CID while preserving the original filename and MIME type**.
 
