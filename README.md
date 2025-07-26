@@ -2,6 +2,17 @@
 
 A minimal Node.js + Express application that lets you **upload any file to IPFS and retrieve it later with its CID while preserving the original filename and MIME type**.
 
+## Prerequisites
+
+1. Node.js 18 or newer
+2. IPFS daemon or gateway
+
+   ```bash
+   # Local daemon (recommended for development)
+   ipfs init          # first time only
+   ipfs daemon
+   ```
+
 ## API Reference
 
 ### `POST /upload`
