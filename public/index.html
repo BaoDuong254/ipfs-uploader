@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="vi">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>IPFS File Upload / Download</title>
+		<script src="https://cdn.tailwindcss.com"></script>
+	</head>
+	<body class="bg-gray-100 p-6">
+		<div class="max-w-xl mx-auto bg-white p-6 rounded-xl shadow">
+			<h1 class="text-2xl font-semibold mb-4">
+				IPFS File Upload / Download
+			</h1>
+
+			<!-- Form upload -->
+			<form id="uploadForm" class="mb-6">
+				<label class="block mb-2 font-medium"
+					>Choose file to upload</label
+				>
+				<input
+					type="file"
+					id="fileInput"
+					title="Choose a file to upload"
+					placeholder="Select file"
+					class="mb-3 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
+				<button
+					type="submit"
+					class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
+					Upload
+				</button>
+			</form>
+
+			<div
+				id="uploadResult"
+				class="text-green-700 font-mono mb-6 break-all"></div>
+
+			<hr class="my-6" />
+
+			<!-- Form download -->
+			<form id="downloadForm">
+				<label class="block mb-2 font-medium">CID to download</label>
+				<input
+					type="text"
+					id="cidInput"
+					class="border p-2 w-full mb-3 rounded-lg"
+					placeholder="Enter CID" />
+				<button
+					type="submit"
+					class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg">
+					Download
+				</button>
+			</form>
+		</div>
+
+		<script>
+			// Upload
+			document
+				.getElementById("uploadForm")
+				.addEventListener("submit", async (e) => {
+					e.preventDefault();
+					const file = document.getElementById("fileInput").files[0];
+					if (!file) return;
+					const formData = new FormData();
+					formData.append("file", file);
+					try {
+						const res = await fetch("/upload", {
+							method: "POST",
+							body: formData,
+						});
+						const json = await res.json();
+						if (json.cid) {
+							document.getElementById(
+								"uploadResult"
+							).textContent = "CID: " + json.cid;
+						} else {
+							alert(json.error || "Upload failed");
+						}
+					} catch (err) {
+						alert(err.message || "Upload failed");
+					}
+				});
+
+			// Download
+			document
+				.getElementById("downloadForm")
+				.addEventListener("submit", (e) => {
+					e.preventDefault();
+					const cid = document
+						.getElementById("cidInput")
+						.value.trim();
+					if (!cid) return;
+					window.open("/download/" + cid, "_blank");
+				});
+		</script>
+	</body>
+</html>
