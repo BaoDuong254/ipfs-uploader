@@ -2,15 +2,6 @@
 
 A minimal Node.js + Express application that lets you **upload any file to IPFS and retrieve it later with its CID while preserving the original filename and MIME type**.
 
-## Features
-
-| Feature | Details |
-|---------|---------|
-| **Upload to IPFS** | `POST /upload` wraps the file in a directory (`wrapWithDirectory: true`), stores it on IPFS and returns the parent **CID** plus the original filename. |
-| **Download by CID** | `GET /download/:cid` looks up the single file inside that directory, sets the correct `Content‑Disposition` header and streams it back with the right extension. |
-| **Zero‑config frontend** | `public/index.html` offers drag‑and‑drop style upload and one‑click download links – all styled with Tailwind. |
-| **Works with any IPFS node** | Point the app to a local daemon (`ipfs daemon`) or a remote gateway by changing a single environment variable. |
-
 ## API Reference
 
 ### `POST /upload`
@@ -28,7 +19,7 @@ Streams the file contained in the directory identified by `:cid`.
 | ----- | ------ | ---------------------------------------- |
 | `cid` | `path` | Parent CID returned earlier by `/upload` |
 
-## How it works (under the hood)
+## How it works
 
 1. The server **wraps every uploaded file in a one‑file directory**.
    This gives you two benefits:
